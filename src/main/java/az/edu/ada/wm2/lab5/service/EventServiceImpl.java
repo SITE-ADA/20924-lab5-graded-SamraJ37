@@ -123,7 +123,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Event updateEventPrice(UUID id, BigDecimal newPrice) {
-        return null;
+        Event event = getEventById(id);
+        if (newPrice == null || newPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        event.setTicketPrice(newPrice);
+        return eventRepository.save(event);
     }
 
 }
